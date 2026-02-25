@@ -1,0 +1,14 @@
+# Dockerfile.postgres - PostgreSQL with PostGIS
+FROM postgis/postgis:16-3.4
+
+ENV POSTGRES_DB=road_db
+ENV POSTGRES_USER=postgres
+
+# Copy initialization script
+COPY init_db.sql /docker-entrypoint-initdb.d/
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
+    CMD pg_isready -U postgres -d road_db || exit 1
+
+EXPOSE 5432

@@ -1,0 +1,15 @@
+# Dockerfile.redis - Redis Cache
+FROM redis:7-alpine
+
+# Optimization for production
+RUN echo "maxmemory 512mb" >> /usr/local/etc/redis/redis.conf && \
+    echo "maxmemory-policy allkeys-lru" >> /usr/local/etc/redis/redis.conf && \
+    echo "appendonly yes" >> /usr/local/etc/redis/redis.conf
+
+# Health check
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=3 \
+    CMD redis-cli ping || exit 1
+
+EXPOSE 6379
+
+CMD ["redis-server", "/usr/local/etc/redis/redis.conf"]

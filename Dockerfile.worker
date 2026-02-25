@@ -1,0 +1,31 @@
+# Dockerfile.worker - Kafka Consumer Inference Worker
+FROM pytorch/pytorch:2.0-cuda11.8-cudnn8-runtime
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    gdal-bin \
+    libgdal-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements
+COPY requirements.txt .
+
+# Install Python dependencies (torch already included in base image)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy application
+COPY . .
+
+# Download YOLOv8 model weights (or mount from persistent storage)
+RUN mkdir -p /models && cd /models && \
+    python -c "from ultralytics import YOLO; YOLO('yolov8m.pt')" || true
+
+ENV MODEL_PATH=/models/best.pt
+ENV PYTHONUNBUFFERED=1
+
+# Run inference worker
+CMD ["python", "workers/inference_worker.py"]

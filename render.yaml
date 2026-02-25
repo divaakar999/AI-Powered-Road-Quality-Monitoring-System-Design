@@ -1,0 +1,90 @@
+services:
+  # PostgreSQL Database with PostGIS
+  - type: pserv
+    name: road-monitor-db
+    env: docker
+    repo: https://github.com/divaakar999/AI-Powered-Road-Quality-Monitoring-System-Design.git
+    dockerfile: ./Dockerfile.postgres
+    plan: standard
+    disk:
+      name: postgres-data
+      mountPath: /var/lib/postgresql/data
+      sizeGb: 20
+    envVars:
+      - key: POSTGRES_DB
+        value: road_db
+      - key: POSTGRES_USER
+        value: postgres
+      - key: POSTGRES_PASSWORD
+        generateValue: true
+
+  # Redis Cache
+  - type: pserv
+    name: road-monitor-redis
+    env: docker
+    repo: https://github.com/divaakar999/AI-Powered-Road-Quality-Monitoring-System-Design.git
+    dockerfile: ./Dockerfile.redis
+    plan: standard
+    envVars: []
+
+  # FastAPI Backend
+  - type: web
+    name: road-monitor-api
+    env: docker
+    repo: https://github.com/divaakar999/AI-Powered-Road-Quality-Monitoring-System-Design.git
+    dockerfile: ./Dockerfile
+    plan: starter
+    numInstances: 1
+    autoDeploy: true
+    healthCheck:
+      path: /health
+      initialDelaySeconds: 30
+      intervalSeconds: 10
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          name: road-monitor-db
+          type: pserv
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: road-monitor-redis
+          type: pserv
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ENVIRONMENT
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: WORKERS
+        value: "4"
+
+  # Inference Worker (Kafka Consumer)
+  - type: background
+    name: road-monitor-inference
+    env: docker
+    repo: https://github.com/divaakar999/AI-Powered-Road-Quality-Monitoring-System-Design.git
+    dockerfile: ./Dockerfile.worker
+    plan: standard
+    numInstances: 1
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          name: road-monitor-db
+          type: pserv
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: road-monitor-redis
+          type: pserv
+          property: connectionString
+      - key: JWT_SECRET
+        fromService:
+          name: road-monitor-api
+          type: web
+          property: JWT_SECRET
+      - key: MODEL_PATH
+        value: /models/best.pt
+      - key: ENVIRONMENT
+        value: production

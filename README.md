@@ -24,7 +24,7 @@ A **comprehensive, scalable, cloud-based road damage detection system** using YO
 
 ## 📚 Documentation
 
-This repository contains **5 comprehensive guides** (~11,500 lines):
+This repository contains **6 comprehensive guides** (~13,000 lines):
 
 ### 1. **[SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)** - High-Level Design
    - System architecture with diagrams
@@ -49,7 +49,15 @@ This repository contains **5 comprehensive guides** (~11,500 lines):
    - Kafka inference worker
    - Authentication module
 
-### 4. **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Production Deployment
+### 4. **[RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md)** - Deploy to Render ⚡
+   - **Fastest path to production (30 minutes)**
+   - Step-by-step Render.com deployment
+   - PostgreSQL + Redis + FastAPI + Worker
+   - Auto-deployment on GitHub push
+   - Cost estimation ($41/month)
+   - Monitoring & scaling
+
+### 5. **[DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md)** - Production Deployment
    - GitHub Actions CI/CD pipeline
    - Complete Kubernetes manifests
    - Monitoring (Prometheus + Grafana)
@@ -57,7 +65,7 @@ This repository contains **5 comprehensive guides** (~11,500 lines):
    - Integration testing
    - Performance optimization
 
-### 5. **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Navigation & Reference
+### 6. **[DOCUMENTATION_INDEX.md](DOCUMENTATION_INDEX.md)** - Navigation & Reference
    - Quick start by role
    - 7-week implementation roadmap
    - Cross-reference guide
@@ -75,7 +83,10 @@ This repository contains **5 comprehensive guides** (~11,500 lines):
 → Start with [API_SPECIFICATION.md](API_SPECIFICATION.md) + [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) (10 hours)
 
 **Want to deploy to production?**
-→ Start with [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) (15 hours)
+→ Start with [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) for Render.com (fastest) or [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for Kubernetes (15 hours)
+
+**Want to deploy to Render (recommended)?**
+→ Follow [RENDER_DEPLOYMENT.md](RENDER_DEPLOYMENT.md) (30 minutes to production)
 
 **Want to integrate a mobile app?**
 → See SDKs in [API_SPECIFICATION.md](API_SPECIFICATION.md) (2 hours)
@@ -83,26 +94,41 @@ This repository contains **5 comprehensive guides** (~11,500 lines):
 **Want to train the ML model?**
 → See "Model Training" in [SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md) (2 weeks)
 
-### Local Development
+## 🌐 Deployment Options
+
+### **Render (Recommended for Backend + API)** ⭐
+Fastest way to go production-ready in **30 minutes**
 
 ```bash
-# Clone repository
-git clone <your-repo-url> && cd road_quality_monitor
-
-# Start with Docker Compose
-docker-compose up -d
-
-# Check services
-docker-compose ps
-
-# View logs
-docker-compose logs -f api
-
-# Test API
-curl -X GET http://localhost:8000/health
+# 1. Push to GitHub (already done ✅)
+# 2. Go to https://render.com
+# 3. Create account and connect GitHub
+# 4. Deploy using render.yaml configuration
+# See RENDER_DEPLOYMENT.md for step-by-step guide
 ```
 
-See [IMPLEMENTATION_GUIDE.md](IMPLEMENTATION_GUIDE.md) for detailed setup.
+✅ **Cost:** ~$41/month (API + DB + Redis + Worker)  
+✅ **Time to production:** 30 minutes  
+✅ **Auto-scaling:** Built-in  
+✅ **Monitoring:** Included  
+
+### **Kubernetes** (Enterprise)
+For large-scale deployments (1000+ devices)
+
+```bash
+# See DEPLOYMENT_GUIDE.md for complete setup
+# Includes: Docker, K8s manifests, CI/CD, monitoring
+```
+
+### **Local Development**
+For testing locally before deployment
+
+```bash
+docker-compose up -d
+curl http://localhost:8000/health
+```
+
+---
 
 ## 🏗️ System Architecture
 
@@ -258,7 +284,7 @@ See [DEPLOYMENT_GUIDE.md](DEPLOYMENT_GUIDE.md) for monitoring setup.
 - ✅ Deployment Guide (2,500 lines)
 - ✅ Documentation Index (1,500 lines)
 
-**Total: ~11,500 lines of comprehensive implementation guides**
+**Total: ~13,000 lines of comprehensive implementation guides**
 
 ## 📄 License
 
