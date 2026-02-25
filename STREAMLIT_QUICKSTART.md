@@ -15,19 +15,28 @@ ls road_quality_monitor/.streamlit/config.toml
 ls road_quality_monitor/road_quality_monitor/4_dashboard/dashboard_main.py
 ```
 
-### Step 2: Update requirements.txt (if needed)
+### Step 3: Verify requirements.txt
+
+Streamlit Cloud uses the **root `requirements.txt`** file. Make sure it's optimized for Streamlit:
 
 ```bash
-# The current requirements.txt is optimized for Streamlit Cloud
-# It's located at: road_quality_monitor/requirements.txt
-cat road_quality_monitor/requirements.txt
+# Check that these libraries are in requirements.txt
+grep -E "(streamlit|ultralytics|opencv-python-headless)" requirements.txt
 ```
 
-✅ **Ensure it contains:**
+✅ **Should contain:**
 - `streamlit>=1.28.0`
-- `ultralytics>=8.0.0`
-- `opencv-python-headless>=4.8.0` (NOT opencv-python)
+- `ultralytics>=8.1.0`
+- `opencv-python-headless>=4.8.0` (NOT `opencv-python`)
 - `numpy<2.0.0`
+- `torch` (installed automatically by ultralytics)
+
+⚠️ **Should NOT contain:**
+- `torch==2.0.1` (too old, use latest via ultralytics)
+- `psycopg2-binary` (requires PostgreSQL system libs)
+- `fastapi` (only needed for backend)
+
+**For FastAPI backend deployment** (Render), use: `requirements.backend.txt`
 
 ### Step 3: Commit & Push to GitHub
 

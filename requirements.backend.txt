@@ -1,0 +1,47 @@
+# ============================================================
+# FastAPI Backend - Requirements (Render.com Deployment)
+# Install with: pip install -r requirements.backend.txt
+# For backend API + inference workers
+# ============================================================
+
+# Web Framework
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database & ORM
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9       # PostgreSQL (requires: apt-get install postgresql-client)
+geoalchemy2==0.14.0          # PostGIS spatial extensions
+
+# Deep Learning - YOLOv8 + PyTorch
+torch>=2.1.0                 # Updated for better Python 3.13 support
+torchvision>=0.16.0
+ultralytics>=8.1.0           # YOLOv8
+
+# Computer Vision
+opencv-python-headless>=4.8.0
+
+# Data & Analytics
+numpy<2.0.0
+pandas>=2.0.0
+scikit-learn>=1.3.0
+
+# Caching & Messaging
+redis==5.0.1
+kafka-python==2.0.2          # Message queue
+
+# Monitoring & Logging
+prometheus-client==0.18.0
+structlog==23.2.1
+
+# Validation & Serialization
+pydantic==2.4.2
+python-dotenv==1.0.0
+PyYAML==6.0
+requests==2.31.0
+
+# Utilities
+tqdm>=4.66.0
+Pillow>=10.0.0
+python-dateutil>=2.8.2
